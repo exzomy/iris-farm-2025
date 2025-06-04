@@ -1,3 +1,16 @@
+- name: Verify Secrets
+  run: |
+    echo "Проверка наличия Secrets:"
+    echo "API_ID: ${{ secrets.API_ID && 'установлен' || 'ОТСУТСТВУЕТ' }}"
+    echo "API_HASH: ${{ secrets.API_HASH && 'установлен' || 'ОТСУТСТВУЕТ' }}"
+    echo "TG_SESSION_BASE64: ${{ secrets.TG_SESSION_BASE64 && 'установлен' || 'ОТСУТСТВУЕТ' }}"
+    echo "CHAT_ID: ${{ secrets.CHAT_ID && 'установлен' || 'ОТСУТСТВУЕТ' }}"
+    
+    if [ -z "${{ secrets.API_ID }}" ] || [ -z "${{ secrets.API_HASH }}" ] || [ -z "${{ secrets.TG_SESSION_BASE64 }}" ] || [ -z "${{ secrets.CHAT_ID }}" ]; then
+      echo "::error::Не все Secrets настроены!"
+      exit 1
+    fi
+
 - name: Install dependencies
   run: |
     pip install pyrogram TgCrypto
