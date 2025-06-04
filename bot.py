@@ -3,60 +3,72 @@ import base64
 import asyncio
 from pyrogram import Client
 
-# Проверка и загрузка переменных окружения
-def load_env():
-    env_vars = {
-        'API_ID': int(os.getenv("API_ID")),
+# Улучшенная проверка переменных окружения
+def check_env_vars():
+    required_vars = {
+        'API_ID': os.getenv("API_ID"),
         'API_HASH': os.getenv("API_HASH"),
         'TG_SESSION_BASE64': os.getenv("TG_SESSION_BASE64"),
-        'CHAT_ID': int(os.getenv("CHAT_ID"))
+        'CHAT_ID': os.getenv("CHAT_ID")
     }
     
-    if not all(env_vars.values()):
-        missing = [k for k, v in env_vars.items() if not v]
-        print(f"Ошибка: Отсутствуют переменные - {', '.join(missing)}")
+    missing_vars = [name for name, value in required_vars.items() if not value]
+    if missing_vars:
+        print(f"❌ Отсутствуют переменные окружения: {', '.join(missing_vars)}")
+        print("Пожалуйста, добавьте их в Secrets GitHub!")
         exit(1)
     
-    return env_vars
+    try:
+        return {
+            'api_id': int(required_vars['API_ID']),
+            'api_hash': required_vars['API_HASH'],
+            'session_b64': required_vars['TG_SESSION_BASE64'],
+            'chat_id': int(required_vars['CHAT_ID'])
+        }
+    except ValueError as e:
+        print(f"❌ Ошибка преобразования переменных: {e}")
+        exit(1)
 
-# Восстановление сессии
-def restore_session(session_b64):
+# Основная функция бота
+async def main():
+    # Проверяем переменные
+    config = check_env_vars()
+    print("✅ Все переменные окружения корректны")
+    
+    # Восстанавливаем сессию
     try:
         with open("my_account.session", "wb") as f:
-            f.write(base64.b64decode(session_b64))
-        print("Сессия успешно восстановлена")
+            f.write(base64.b64decode(config['session_b64']))
+        print("✅ Сессия успешно восстановлена")
     except Exception as e:
-        print(f"Ошибка восстановления сессии: {e}")
+        print(f"❌ Ошибка восстановления сессии: {e}")
         exit(1)
-
-async def run_bot():
-    env = load_env()
-    restore_session(env['TG_SESSION_BASE64'])
     
+    # Запускаем клиент
     app = Client(
         "my_account",
-        api_id=env['API_ID'],
-        api_hash=env['API_HASH'],
+        api_id=config['api_id'],
+        api_hash=config['api_hash'],
         workdir=".",
         in_memory=True
     )
-
-    delay_minutes = 0
+    
     async with app:
+        delay = 0
         while True:
             try:
                 await app.send_message(
-                    env['CHAT_ID'],
-                    f"⏰ Сообщение после {4*60 + delay_minutes} минут"
+                    config['chat_id'],
+                    f"⏰ Сообщение после {4*60 + delay} минут"
                 )
-                print(f"Сообщение отправлено (задержка +{delay_minutes} минут)")
+                print(f"📨 Сообщение отправлено (задержка +{delay} минут)")
                 
-                await asyncio.sleep(4 * 3600 + delay_minutes * 60)
-                delay_minutes = (delay_minutes + 1) % 60
+                await asyncio.sleep(4 * 3600 + delay * 60)
+                delay = (delay + 1) % 60
             except Exception as e:
-                print(f"Ошибка: {e}. Повторная попытка через 60 секунд")
+                print(f"⚠️ Ошибка: {e}. Повтор через 60 сек...")
                 await asyncio.sleep(60)
 
 if __name__ == "__main__":
     print("🚀 Запуск Telegram бота")
-    asyncio.run(run_bot())
+    asyncio.run(main())
