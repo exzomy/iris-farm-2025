@@ -1,3 +1,4 @@
+
 import asyncio
 from pyrogram import Client
 from datetime import datetime
@@ -9,30 +10,24 @@ app = Client(
     workdir="."
 )
 
-async def send_farming_message():
-    async with app:
-        while True:
-            try:
-                current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                message = (
-                    "фарма\n"
-                    f"⏰ Сообщение отправлено в {current_time}"
-                    "\n⚡ script by exzomy ⚡"
-                )
-                
+async def main():
+    while True:
+        try:
+            async with app:
+                # Отправка сообщения
                 await app.send_message(
                     -1002173353459,  # Замените на ваш CHAT_ID
-                    message
+                    f"фарма\n⏰ сообщение отправлено в {datetime.now().strftime('%H:%M:%S')}\n[bot by exzomy]"
                 )
-                print(f"✅ Сообщение отправлено в {current_time}")
-                
-                # Ждем ровно 4 часа 1 минуту (14 460 секунд)
+                print(f"✅ Сообщение отправлено! Следующее через 4ч 1мин")
+
+                # Точная задержка 4ч 1мин (14 460 секунд)
                 await asyncio.sleep(4 * 3600 + 60)
-                
-            except Exception as e:
-                print(f"⚠️ Ошибка: {e}. Повтор через 5 минут...")
-                await asyncio.sleep(300)
+
+        except Exception as e:
+            print(f"⚠️ Ошибка: {e}. Повтор через 5 минут...")
+            await asyncio.sleep(300)  # Ждем 5 минут при ошибке
 
 if __name__ == "__main__":
-    print("🚀 Фарм-бот запущен")
-    asyncio.run(send_farming_message())
+    print("🚀 Бот запущен (интервал: 4ч 1мин)")
+    asyncio.run(main())
