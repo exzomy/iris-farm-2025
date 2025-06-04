@@ -17,7 +17,7 @@ async def main():
                 # Отправка сообщения
                 await app.send_message(
                     -1002173353459,  # Замените на ваш CHAT_ID
-                    f"фарма\n⏰ сообщение отправлено в {datetime.now().strftime('%H:%M:%S')}\n[bot by exzomy]"
+                    f"фарма\n⏰ сообщение отправлено в {datetime.now().strftime('%H:%M:%S')}\n⚡️ bot by exzomy"
                 )
                 print(f"✅ Сообщение отправлено! Следующее через 4ч 1мин")
 
