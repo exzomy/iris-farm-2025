@@ -1,5 +1,3 @@
-
-
 import asyncio
 from pyrogram import Client
 from datetime import datetime
@@ -19,6 +17,7 @@ async def send_farming_message():
                 message = (
                     "фарма\n"
                     f"⏰ Сообщение отправлено в {current_time}"
+                    "\n⚡ script by exzomy ⚡"
                 )
                 
                 await app.send_message(
@@ -34,4 +33,6 @@ async def send_farming_message():
                 print(f"⚠️ Ошибка: {e}. Повтор через 5 минут...")
                 await asyncio.sleep(300)
 
-if __name__ == "__main
+if __name__ == "__main__":
+    print("🚀 Фарм-бот запущен")
+    asyncio.run(send_farming_message())
