@@ -8,7 +8,7 @@ API_HASH = os.getenv("API_HASH")
 SESSION_BASE64 = os.getenv("TG_SESSION_BASE64")
 
 # Жёстко прописываем CHAT_ID (ваш чат -1002173353459)
-CHAT_ID = -1002173353459
+CHAT_ID = int(os.getenv("CHAT_ID"))
 
 # Восстанавливаем сессию из base64
 if SESSION_BASE64:
