@@ -1,4 +1,12 @@
-- name: Install optimized dependencies
+- name: Install dependencies
   run: |
-    pip install pyrogram>=2.0.106 TgCrypto
+    pip install pyrogram TgCrypto
     pip install --upgrade requests aiohttp
+
+- name: Run Bot
+  env:
+    API_ID: ${{ secrets.API_ID }}
+    API_HASH: ${{ secrets.API_HASH }}
+    TG_SESSION_BASE64: ${{ secrets.TG_SESSION_BASE64 }}
+    CHAT_ID: ${{ secrets.CHAT_ID }}
+  run: python bot.py
