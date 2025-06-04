@@ -1,4 +1,4 @@
-name: Telegram Bot with Session File
+name: Telegram Bot
 
 on:
   schedule:
@@ -10,11 +10,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
+          
       - name: Install dependencies
         run: pip install pyrogram TgCrypto
+          
       - name: Run Bot
         run: python bot.py
