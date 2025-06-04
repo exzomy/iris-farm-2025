@@ -21,7 +21,7 @@ async def send_farming_message():
                 )
                 
                 await app.send_message(
-                    -1001234567890,  # Замените на ваш CHAT_ID
+                    -1002173353459,  # Замените на ваш CHAT_ID
                     message
                 )
                 print(f"✅ Сообщение отправлено в {current_time}")
