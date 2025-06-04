@@ -1,4 +1,4 @@
-- name: Install dependencies
+- name: Install optimized dependencies
   run: |
-    pip install pyrogram TgCrypto
-    pip install --upgrade requests
+    pip install pyrogram>=2.0.106 TgCrypto
+    pip install --upgrade requests aiohttp
