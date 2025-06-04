@@ -1,9 +1,9 @@
-name: Telegram Bot
+name: Telegram Bot (4h1m from start)
 
 on:
+  workflow_dispatch:  # Только ручной запуск
   schedule:
-    - cron: '1 */4 * * *'  # Каждые 4 часа в 1 минуту
-  workflow_dispatch:
+    - cron: '0 */4 * * *'  # Резервный триггер каждые 4 часа
 
 jobs:
   run-bot:
@@ -19,5 +19,5 @@ jobs:
       - name: Install dependencies
         run: pip install pyrogram TgCrypto
           
-      - name: Run Bot
+      - name: Run persistent bot
         run: python bot.py
