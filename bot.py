@@ -11,7 +11,7 @@ from telegram.ext import (
 )
 
 # Конфигурация бота
-TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+TOKEN = """7927337290:AAEnfzGlXmm2KXVw3HwVRXYBZVd26UFrvgo"""
 if not TOKEN:
     raise ValueError("Не установлен токен бота. Укажите его в переменных окружения.")
 
