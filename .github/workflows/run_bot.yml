@@ -1,23 +1,28 @@
-name: Telegram Bot (4h1m from start)
+name: Run Telegram Bot
 
 on:
-  workflow_dispatch:  # Только ручной запуск
+  workflow_dispatch:
   schedule:
-    - cron: '0 */4 * * *'  # Резервный триггер каждые 4 часа
+    - cron: '0 */6 * * *'  # Перезапуск каждые 6 часов для надежности
 
 jobs:
   run-bot:
     runs-on: ubuntu-latest
+    
     steps:
-      - uses: actions/checkout@v4
-      
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-          
-      - name: Install dependencies
-        run: pip install pyrogram TgCrypto
-          
-      - name: Run persistent bot
-        run: python bot.py
+    - uses: actions/checkout@v2
+    
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Run bot
+      env:
+        TELEGRAM_BOT_TOKEN: $7927337290:AAEnfzGlXmm2KXVw3HwVRXYBZVd26UFrvgo
+      run: python bot.py
